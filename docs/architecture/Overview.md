@@ -51,7 +51,7 @@ Each protocol is responsible for a specific area of communication and interopera
 
 ## ADCP
 
-The AADA Device Control Protocol (ADCP) is the primary protocol used for communication between AADAconnect-enabled devices and management applications.
+The AADA Device Coordination Protocol (ADCP) is the primary protocol used for communication between AADAconnect-enabled devices and management applications.
 
 Its responsibilities include:
 

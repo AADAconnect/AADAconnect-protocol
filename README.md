@@ -16,7 +16,7 @@ The AADAconnect Protocol Suite currently consists of the following protocols.
 
 | Protocol | Description | Status |
 |----------|-------------|--------|
-| **ADCP** | AADA Device Control Protocol for device management, monitoring, configuration, telemetry and remote control. | Stable |
+| **ADCP** | AADA Device Coordination Protocol for device management, monitoring, configuration, telemetry and remote control. | Stable |
 | **APOP** | AADA Provisioning Protocol used during initial device onboarding and network provisioning. | Under Development |
 | **AOTA** | AADA Over-the-Air firmware update protocol. | Under Development |
 | **AADAcom** | High-performance embedded communication protocol for direct device-to-device communication. | Experimental |
