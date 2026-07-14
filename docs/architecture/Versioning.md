@@ -1,253 +1,243 @@
 # Versioning
 
-## Purpose
-
-This document defines the versioning policy for the AADAconnect Protocol Suite and its individual protocols.
-
-A consistent versioning policy allows protocol implementations to evolve in a predictable manner while maintaining interoperability between compatible implementations.
-
-Unless otherwise specified, all protocols within the AADAconnect Protocol Suite SHALL follow the rules defined in this document.
+> Defines the versioning model for the AADAconnect Protocol Suite and its constituent protocols.
 
 ---
 
-# Overview
+# Document Information
 
-The AADAconnect Protocol Suite consists of multiple independent protocols.
-
-Each protocol evolves independently and therefore maintains its own protocol version.
-
-In addition to individual protocol versions, the AADAconnect Protocol Suite itself maintains a separate version representing the overall specification release.
-
-Example:
-
-| Component | Version |
-|-----------|----------|
-| AADAconnect Protocol Suite | 1.0.0 |
-| ADCP | 1.2.0 |
-| APOP | 1.0.0 |
-| AOTA | 0.8.0 |
-| AADAcom | 0.4.0 |
-| AADAnetSync | 0.2.0 |
+| Field | Value |
+|-------|-------|
+| Document | Versioning |
+| Category | Architecture |
+| Document Type | Normative |
+| Applies To | AADAconnect Protocol Suite |
+| Status | Stable |
+| Version | 1.0 |
+| Last Updated | 2026-07-14 |
 
 ---
 
-# Version Format
+# Purpose
 
-All versions SHALL follow Semantic Versioning (SemVer).
+This document defines the versioning strategy used throughout the AADAconnect Protocol Suite.
 
-```
-MAJOR.MINOR.PATCH
-```
+The protocol suite consists of multiple independent protocols that evolve at different rates. To support this, each protocol maintains its own version while the protocol suite itself also has a separate version identifying the overall specification release.
 
-Example:
-
-```
-1.0.0
-1.4.2
-2.0.0
-```
+This document establishes the rules governing version assignment, compatibility expectations, and protocol evolution.
 
 ---
 
-# Version Components
+# Scope
 
-## Major Version
+This document defines:
 
-A major version SHALL be incremented when protocol changes are not backward compatible.
+- Protocol Suite versioning.
+- Individual protocol versioning.
+- Semantic version numbering.
+- Compatibility expectations between versions.
+- Version lifecycle principles.
 
-Typical examples include:
-
-- Removal of protocol messages.
-- Incompatible packet formats.
-- Changes to required protocol behavior.
-- Breaking interoperability with previous implementations.
-
-Example:
-
-```
-ADCP 1.x.x
-↓
-
-ADCP 2.0.0
-```
-
-An implementation supporting ADCP 1.x is not expected to communicate correctly with ADCP 2.x unless compatibility mechanisms are explicitly defined.
+This document does **not** define protocol-specific version fields or negotiation mechanisms. Those are defined by the respective protocol specifications.
 
 ---
 
-## Minor Version
+# Requirement Language
 
-A minor version SHALL be incremented when new functionality is introduced without breaking existing implementations.
-
-Typical examples include:
-
-- New message types.
-- Additional optional fields.
-- New protocol capabilities.
-- Additional commands.
-
-Implementations supporting an earlier minor version SHOULD continue to interoperate with newer implementations whenever practical.
-
-Example:
-
-```
-1.2.0
-↓
-
-1.3.0
-```
+The key words **"MUST"**, **"MUST NOT"**, **"REQUIRED"**, **"SHALL"**, **"SHALL NOT"**, **"SHOULD"**, **"SHOULD NOT"**, **"RECOMMENDED"**, **"NOT RECOMMENDED"**, **"MAY"**, and **"OPTIONAL"** in this specification are to be interpreted as described in RFC 2119.
 
 ---
 
-## Patch Version
+# Definitions
 
-A patch version SHALL be incremented for changes that do not modify protocol interoperability.
+For the purposes of this specification:
 
-Examples include:
-
-- Specification clarifications.
-- Editorial corrections.
-- Documentation improvements.
-- Non-breaking implementation guidance.
-
-Patch releases SHALL NOT introduce protocol-breaking changes.
+| Term | Definition |
+|------|------------|
+| Protocol Suite | The complete collection of protocols that constitute the AADAconnect Protocol Suite. |
+| Protocol Version | The version assigned to an individual protocol. |
+| Suite Version | The version assigned to the overall AADAconnect Protocol Suite specification. |
+| Semantic Version | A version expressed as **MAJOR.MINOR.PATCH**. |
+| Breaking Change | A change that may prevent interoperability with previous implementations. |
 
 ---
 
-# Independent Protocol Versioning
+# Table of Contents
 
-Each protocol within the AADAconnect Protocol Suite SHALL maintain its own version.
+1. Versioning Model
+2. Protocol Suite Version
+3. Protocol Version
+4. Semantic Versioning
+5. Version Lifecycle
+6. Compatibility Principles
+7. Current Versioning Strategy
+8. Conformance
+9. Related Documents
 
-Updating one protocol does not require updating every other protocol.
+---
 
-Example:
+# Versioning Model
 
-```
-ADCP        1.4.0
-APOP        1.1.0
-AOTA        0.9.0
-AADAcom     0.5.0
-```
+The AADAconnect Protocol Suite uses two independent versioning levels:
 
-This allows protocols to evolve independently while minimizing unnecessary specification updates.
+1. **Protocol Suite Version**
+2. **Individual Protocol Version**
+
+Each protocol evolves independently and SHALL maintain its own version number.
+
+The Protocol Suite version identifies a coherent release of the specification as a whole.
+
+A change to one protocol does **not** necessarily require a new major version of the entire protocol suite.
 
 ---
 
 # Protocol Suite Version
 
-The AADAconnect Protocol Suite SHALL also maintain its own version.
+The Protocol Suite version identifies the revision of the AADAconnect Protocol Suite specification.
 
-The protocol suite version represents the published specification as a whole and does not imply that every protocol has changed.
+It represents the collection of protocol specifications released together.
 
-A new suite version MAY include:
-
-- New protocol releases.
-- New specifications.
-- Updated architecture documents.
-- Documentation improvements.
-
----
-
-# Experimental Protocols
-
-Protocols under active development SHOULD use a major version of zero.
+The Protocol Suite version SHALL follow Semantic Versioning.
 
 Example:
 
+```text
+AADAconnect Protocol Suite
+Version 1.0.0
 ```
-0.1.0
-0.2.0
-0.5.0
-```
 
-Experimental protocols are subject to incompatible changes before reaching version 1.0.0.
+The Protocol Suite version is intended for documentation, specification releases, and reference purposes.
 
-Example:
-
-- AADAcom
-- AADAnetSync
-- Early AOTA revisions
+Individual implementations are expected to identify the versions of the specific protocols they support.
 
 ---
 
-# Compatibility
+# Individual Protocol Version
 
-Each protocol specification SHALL explicitly state its compatibility expectations.
+Each protocol SHALL maintain an independent version.
 
-Compatibility information SHOULD identify:
+Examples include:
 
-- Supported protocol versions.
-- Incompatible protocol versions.
-- Deprecated features.
-- Migration guidance where applicable.
+| Protocol | Example Version |
+|----------|-----------------|
+| ADCP | 1.2.0 |
+| APOP | 1.0.0 |
+| AOTA | 1.1.0 |
+| AADAcom | 0.4.0 |
+| AADAnetSync | 0.2.0 |
 
-Example:
+A protocol MAY evolve independently without requiring changes to unrelated protocols.
 
+---
+
+# Semantic Versioning
+
+All protocol versions SHALL use the format:
+
+```text
+MAJOR.MINOR.PATCH
 ```
-Compatible with
 
-ADCP 1.x
+## Major Version
 
-Not Compatible with
+The MAJOR version SHALL be incremented when introducing changes that intentionally break compatibility with previous versions.
 
-ADCP 2.x
-```
+Examples include:
 
-The reason for incompatibility SHOULD be documented whenever compatibility is intentionally broken.
-
----
-
-# Deprecation Policy
-
-Protocol features are not required to be removed immediately when superseded.
-
-Depending on the nature of the change, a feature MAY:
-
-- Remain fully supported.
-- Be marked as deprecated.
-- Be removed in a future major version.
-- Be removed immediately if required for security, correctness, or protocol integrity.
-
-Each protocol specification SHALL clearly identify deprecated behavior and any planned removal schedule.
+- Removing required protocol fields.
+- Changing mandatory message behavior.
+- Introducing incompatible protocol semantics.
 
 ---
 
-# Document Version Information
+## Minor Version
 
-Protocol specification documents SHOULD include version information where appropriate.
+The MINOR version SHALL be incremented when introducing new functionality while maintaining compatibility with previous minor versions of the same major version.
 
-Example:
+Examples include:
 
-| Field | Value |
-|-------|-------|
-| Protocol | ADCP |
-| Protocol Version | 1.2.0 |
-| Specification Version | 1.0 |
-| Status | Stable |
-| Last Updated | YYYY-MM-DD |
-
-This metadata assists implementers in identifying the applicable specification.
+- New optional messages.
+- Additional capabilities.
+- New protocol extensions.
 
 ---
 
-# Version History
+## Patch Version
 
-Each protocol SHALL maintain an independent version history documenting protocol evolution.
+The PATCH version SHALL be incremented when making corrections that do not affect protocol compatibility.
 
-Version history SHOULD include:
+Examples include:
 
-- Version number.
-- Release date.
-- Summary of changes.
-- Compatibility impact.
+- Clarifications to the specification.
+- Editorial improvements.
+- Corrections to protocol definitions.
+- Non-breaking implementation guidance.
 
-Detailed version histories are maintained within the corresponding protocol documentation.
+Patch releases SHALL NOT introduce protocol-breaking changes.
+---
+
+# Version Lifecycle
+
+Protocols evolve independently.
+
+Implementations SHOULD support the protocol versions required by their intended deployment environment.
+
+Deprecated behavior SHOULD remain documented until officially removed in a future major version.
+
+Experimental protocols MAY use major version **0**, indicating that compatibility is not guaranteed between minor releases.
+
+---
+
+# Compatibility Principles
+
+Protocol versions communicate implementation expectations rather than implementation age.
+
+Implementations claiming support for a protocol SHALL implement the behavior defined by the supported protocol version.
+
+Compatibility requirements between different protocol versions are defined in the Compatibility specification.
+
+---
+
+# Current Versioning Strategy
+
+The current AADAconnect Protocol Suite follows these principles:
+
+- Every protocol maintains an independent version.
+- The Protocol Suite maintains its own version.
+- Semantic Versioning is used throughout the specification.
+- Experimental protocols may evolve more rapidly until stabilized.
+
+As of this revision:
+
+- ADCP is the most mature protocol but continue to evolve.
+- APOP and AOTA are stable but continue to evolve.
+- AADAcom and AADAnetSync remain under active development.
+
+---
+
+# Conformance
+
+An implementation claiming compliance with the AADAconnect Protocol Suite SHALL follow the versioning rules defined in this document.
+
+Protocol implementations SHALL accurately identify the protocol versions they support.
 
 ---
 
 # Related Documents
 
-- Overview.md
-- ProtocolStack.md
-- Compatibility.md
-- SecurityModel.md
+## Normative References
+
+- [Compatibility](Compatibility.md)
+
+## Informative References
+
+- [Architecture Overview](Overview.md)
+- [Protocol Stack](ProtocolStack.md)
+
+---
+
+# Document Navigation
+
+**Previous:** [Protocol Stack](ProtocolStack.md)
+
+**Next:** [Compatibility](Compatibility.md)
