@@ -1,222 +1,243 @@
 # Protocol Stack
 
-## Purpose
-
-The AADAconnect Protocol Suite is composed of multiple protocols operating at different layers of the communication architecture. Each protocol is designed for a specific purpose while integrating with the others to provide a complete device ecosystem.
-
-This document describes the relationship between the protocols and the transport technologies on which they operate.
+> Defines the layered architecture of the AADAconnect Protocol Suite and the responsibilities of each architectural layer.
 
 ---
 
-# Overview
+# Document Information
 
-Unlike monolithic communication protocols, the AADAconnect Protocol Suite consists of independent protocols, each responsible for a well-defined area of functionality.
-
-Some protocols build upon others, while some operate independently.
-
----
-
-# Protocol Stack
-
-```
-                           AADAconnect Platform
-┌────────────────────────────────────────────────────────────┐
-│                    Dashboard / Applications                │
-└────────────────────────────────────────────────────────────┘
-                              │
-                              │
-                     AADAconnect Protocol Suite
-                              │
-        ┌─────────────────────┴─────────────────────┐
-        │                                           │
-        ▼                                           ▼
-      ADCP                                      AADAcom
-        │                                           │
-   ┌────┴────┐                               AADAnetSync
-   │         │
-   ▼         ▼
- APOP      AOTA
-        (Control & Coordination)
-```
+| Field | Value |
+|-------|-------|
+| Document | Protocol Stack |
+| Category | Architecture |
+| Document Type | Normative |
+| Applies To | AADAconnect Protocol Suite |
+| Status | Draft |
+| Version | 1.0 |
+| Last Updated | 2026-07-14 |
 
 ---
 
-# Transport Stack
+# Purpose
 
-## ADCP
+This document defines the layered architecture of the AADAconnect Protocol Suite.
 
-ADCP currently operates over MQTT.
+It identifies the responsibilities of each architectural layer, distinguishes AADAconnect protocols from the transport technologies they use, and establishes how applications, protocols, transports, and networks interact.
 
-```
-Application
-      │
-      ▼
-ADCP
-      │
-      ▼
-MQTT
-      │
-      ▼
-TCP
-      │
-      ▼
-IP
-      │
-      ▼
-Network
-```
-
-MQTT provides reliable message delivery between devices and management applications. The MQTT broker may be deployed locally or remotely depending on the deployment environment.
+All protocol specifications within the AADAconnect Protocol Suite SHALL conform to the architectural model defined in this document.
 
 ---
 
-## APOP
+# Scope
 
-APOP operates during device provisioning using a temporary wireless access point created by the device.
+This document defines:
 
-```
-Dashboard
-      │
-      ▼
-HTTP
-      │
-      ▼
-JSON API
-      │
-      ▼
-SoftAP
-      │
-      ▼
-Device
-```
+- The architectural layers of the AADAconnect Protocol Suite.
+- The responsibilities of each layer.
+- The relationship between protocols and transport technologies.
+- The role of each protocol within the protocol suite.
 
-Provisioning requests and responses are exchanged using HTTP with JSON payloads.
+This document does **not** define:
+
+- Protocol message formats.
+- Authentication mechanisms.
+- Device state machines.
+- Packet structures.
+- Transport-specific implementation details.
+
+These topics are specified within the respective protocol specifications.
 
 ---
 
-## AOTA
+# Requirement Language
 
-AOTA uses two communication paths.
-
-### Control Path
-
-Protocol coordination occurs through ADCP.
-
-```
-Dashboard
-      │
-      ▼
-ADCP
-      │
-      ▼
-MQTT
-      │
-      ▼
-Device
-```
-
-Typical operations include:
-
-- Update availability
-- Version information
-- Update initiation
-- Progress reporting
-- Completion notification
-- Failure reporting
-
-### Firmware Download Path
-
-Firmware images are downloaded independently using HTTPS.
-
-```
-Device
-      │
-      ▼
-HTTPS
-      │
-      ▼
-Firmware Repository
-(GitHub Releases or equivalent)
-```
-
-Separating firmware transfer from protocol coordination reduces load on the messaging infrastructure while allowing standard HTTPS infrastructure to distribute firmware images efficiently.
+The key words **"MUST"**, **"MUST NOT"**, **"REQUIRED"**, **"SHALL"**, **"SHALL NOT"**, **"SHOULD"**, **"SHOULD NOT"**, **"RECOMMENDED"**, **"NOT RECOMMENDED"**, **"MAY"**, and **"OPTIONAL"** in this specification are to be interpreted as described in RFC 2119.
 
 ---
 
-## AADAcom
+# Table of Contents
 
-AADAcom is an embedded communication protocol designed for direct device-to-device communication.
-
-```
-Application
-      │
-      ▼
-AADAcom
-      │
-      ▼
-IEEE 802.11 MAC / Wi-Fi
-      │
-      ▼
-Peer Device
-```
-
-Unlike ADCP, AADAcom does not depend on MQTT for communication and is intended for low-latency embedded networking.
+1. Architectural Overview
+2. Layered Architecture
+3. Application Layer
+4. Protocol Layer
+5. Transport Layer
+6. Network Layer
+7. Protocol Responsibilities
+8. Current Protocol Stack
+9. Related Documents
 
 ---
 
-## AADAnetSync
+# Architectural Overview
 
-AADAnetSync operates as a synchronization layer within AADAcom.
+The AADAconnect Protocol Suite follows a layered architecture.
 
-```
-Application
-      │
-      ▼
-AADAnetSync
-      │
-      ▼
-AADAcom
-      │
-      ▼
-IEEE 802.11 MAC / Wi-Fi
-```
+Each layer has a clearly defined responsibility and communicates only with the adjacent layers through well-defined interfaces.
 
-It provides synchronization services required by distributed applications such as multi-device audio playback.
+Separating responsibilities into layers improves maintainability, allows protocols to evolve independently, and enables multiple transport technologies to be used without changing protocol behavior.
 
 ---
 
-# Design Considerations
+# Layered Architecture
 
-The protocol stack is designed with the following objectives:
-
-- Independent protocol evolution
-- Clear separation of responsibilities
-- Efficient operation on embedded systems
-- Minimal protocol coupling
-- Reuse of established transport technologies where appropriate
-- Native communication when application requirements demand lower latency
+```
+Applications
+│
+├── Dashboard
+├── Mobile Applications
+├── Desktop Applications
+├── Future SDKs
+│
+├────────────────────────────────────────────
+│        AADAconnect Protocol Suite
+│
+├── ADCP
+├── APOP
+├── AOTA
+├── AADAcom
+│     └── AADAnetSync
+│
+├────────────────────────────────────────────
+│
+├── MQTT
+├── HTTP
+├── HTTPS
+├── Wi-Fi Peer Communication (IEEE 802.11)
+│
+├────────────────────────────────────────────
+│
+├── Wi-Fi
+├── Ethernet
+├── Internet
+└── Local Networks
+```
 
 ---
 
-# Protocol Independence
+# Application Layer
 
-Each protocol defines its own behavior and versioning.
+The Application Layer consists of software that interacts with AADAconnect devices using one or more protocols defined by this specification.
 
-A device is not required to implement every protocol within the AADAconnect Protocol Suite.
+Examples include:
 
-For example:
+- Web dashboards
+- Mobile applications
+- Desktop applications
+- SDKs
+- Automation platforms
+- Future third-party implementations
 
-- A Smart Plug may implement ADCP, APOP and AOTA.
-- A Smart Speaker may additionally implement AADAcom and AADAnetSync.
+Applications SHOULD communicate through the protocol layer rather than interacting directly with transport technologies.
 
-This modular approach allows different device classes to implement only the protocols necessary for their intended functionality.
+---
+
+# Protocol Layer
+
+The Protocol Layer defines the communication rules used by the AADAconnect ecosystem.
+
+Protocols specify:
+
+- Device behavior.
+- Message formats.
+- Operational workflows.
+- Coordination mechanisms.
+- Compatibility requirements.
+
+Protocols are transport-independent wherever practical.
+
+Individual protocol specifications define how each protocol maps onto supported transport technologies.
+
+---
+
+# Transport Layer
+
+The Transport Layer carries protocol data between communicating endpoints.
+
+Transport technologies are not part of the AADAconnect Protocol Suite.
+
+Instead, they provide the communication channels used by AADAconnect protocols.
+
+Current transports include:
+
+| Transport | Used By |
+|-----------|---------|
+| MQTT | ADCP, AOTA |
+| HTTP | APOP |
+| HTTPS | AOTA |
+| Wi-Fi Peer Communication | AADAcom |
+
+Additional transports MAY be supported in future revisions provided they satisfy the requirements of the corresponding protocol.
+
+---
+
+# Network Layer
+
+The Network Layer provides the underlying connectivity required by transport technologies.
+
+Examples include:
+
+- Wi-Fi
+- Ethernet
+- Internet
+- Local IP networks
+
+The protocol specifications generally do not depend on a specific network technology unless explicitly stated.
+
+---
+
+# Protocol Responsibilities
+
+Each protocol within the AADAconnect Protocol Suite has a clearly defined responsibility.
+
+| Protocol | Primary Responsibility |
+|----------|-------------------------|
+| ADCP | Device coordination, management, monitoring, and remote control. |
+| APOP | Device provisioning and onboarding. |
+| AOTA | Firmware update management. |
+| AADAcom | Embedded device-to-device communication. |
+| AADAnetSync | Time synchronization and coordination within AADAcom. |
+
+Protocols SHOULD avoid overlapping responsibilities whenever practical.
+
+---
+
+# Current Protocol Stack
+
+The current protocol relationships are summarized below.
+
+- ADCP provides device coordination and operational communication.
+- APOP is an independent provisioning protocol using SoftAP, HTTP, and JSON.
+- AOTA is an independent firmware update protocol that uses ADCP for update coordination and HTTPS for firmware delivery.
+- AADAcom provides embedded peer-to-peer communication between compatible devices.
+- AADAnetSync is a synchronization sub-protocol within AADAcom.
+
+### Current Implementation
+
+The official AADAconnect firmware currently implements APOP and AOTA functionality within the ADCP firmware module.
+
+This implementation detail does not change their status as independent protocols within the AADAconnect Protocol Suite specification.
+
+Future firmware revisions MAY separate these implementations without affecting protocol compatibility.
 
 ---
 
 # Related Documents
 
-- Overview.md
-- NamingConvention.md
-- Versioning.md
-- Compatibility.md
-- SecurityModel.md
+## Normative References
+
+- [Versioning](Versioning.md)
+- [Compatibility](Compatibility.md)
+- [Security Model](SecurityModel.md)
+
+## Informative References
+
+- [Architecture Overview](Overview.md)
+
+---
+
+# Document Navigation
+
+**Previous:** [Architecture Overview](Overview.md)
+
+**Next:** [Versioning](Versioning.md)
