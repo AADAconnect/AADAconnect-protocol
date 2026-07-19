@@ -63,11 +63,9 @@ The key words **"MUST"**, **"MUST NOT"**, **"REQUIRED"**, **"SHALL"**, **"SHALL 
 
 # Definitions
 
-| Term | Definition |
-|------|------------|
-| Entity | Any participant capable of communicating using ADCP. |
-| Coordination | The exchange of protocol messages to establish, maintain, or modify the operational state of devices and services. |
-| Protocol Message | A structured JSON message defined by the ADCP specification. |
+This document uses the architectural terminology defined in the **AADAconnect Architecture Overview**.
+
+Protocol-specific terms are introduced only where required.
 
 ---
 
@@ -77,11 +75,12 @@ The key words **"MUST"**, **"MUST NOT"**, **"REQUIRED"**, **"SHALL"**, **"SHALL 
 2. Protocol Scope
 3. Design Goals
 4. Design Principles
-5. Protocol Entities
-6. Operational Model
-7. Relationship to Other Protocols
-8. Conformance
-9. Related Documents
+5. User Scope
+6. Protocol Entities
+7. Operational Model
+8. Relationship to Other Protocols
+9. Conformance
+10. Related Documents
 
 ---
 
@@ -172,6 +171,20 @@ The protocol may operate over any transport capable of satisfying the requiremen
 ## Extensibility
 
 The protocol is designed to evolve through versioned extensions while maintaining compatibility wherever practical.
+
+---
+
+# User Scope
+
+ADCP operates entirely within a User Scope.
+
+The protocol coordinates the devices, metadata, applications, controllers, and other participating entities belonging to a single AADAconnect deployment.
+
+Fetch Payloads, Meta Payloads, authentication, compatibility negotiation, synchronization, and protocol state are all scoped to the User Scope.
+
+ADCP does not define mechanisms for coordinating multiple User Scopes or sharing protocol state across User Scope boundaries.
+
+Future AADAconnect specifications MAY define controlled interactions between User Scopes where required.
 
 ---
 

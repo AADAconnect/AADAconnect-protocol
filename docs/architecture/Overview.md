@@ -12,9 +12,9 @@
 | Category | Architecture |
 | Document Type | Informative |
 | Applies To | AADAconnect Protocol Suite |
-| Status | Draft |
+| Status | Stable and Actively Developed |
 | Version | 1.0 |
-| Last Updated | 2026-07-14 |
+| Last Updated | 2026-07-19 |
 
 ---
 
@@ -55,6 +55,22 @@ These topics are defined in the corresponding protocol specifications.
 This document is informative.
 
 Normative requirement keywords such as **MUST**, **SHALL**, and **SHOULD** are defined for the AADAconnect Protocol Suite but are generally not used within this document.
+
+---
+
+# Definitions
+
+The following terms are used throughout the AADAconnect Protocol Suite.
+
+| Term | Definition |
+|------|------------|
+| User Scope | The logical boundary containing the devices, applications, controllers, metadata, protocol state, credentials, and other participating entities belonging to a single AADAconnect deployment. |
+| Protocol Entity | Any device, application, controller, service, or software component capable of participating in one or more AADAconnect protocols. |
+| Device Authority | The architectural principle that devices remain the authoritative source of their own operational state whenever practical. |
+| Fetch Payload | An authoritative protocol payload representing the current synchronized state of a specific category of platform information within a User Scope. |
+| Fetch Snapshot | The current synchronized instance of a Fetch Payload available to participating entities. |
+| Meta Payload | A protocol payload containing metadata referenced by one or more Fetch Payloads. |
+| Snapshot Synchronization | The process by which protocol entities synchronize authoritative platform state through Fetch Payloads and Meta Payloads. |
 
 ---
 
@@ -142,7 +158,7 @@ Provisioning, coordination, firmware updates, and device-to-device communication
 
 ## Device Authority
 
-Operational state originates from devices rather than centralized infrastructure whenever practical.
+Devices are the authoritative source of their operational state whenever practical.
 
 Supporting services may cache or relay information but should not become the authoritative source of device state.
 
@@ -155,6 +171,29 @@ Specific transport mappings are documented within the respective protocol specif
 ## Independent Evolution
 
 Protocols evolve independently through separate versioning while remaining part of a unified protocol suite.
+
+## User-Scoped Architecture
+
+AADAconnect follows a **user-scoped architecture**.
+
+The platform is designed around independent **User Scopes** rather than a single global namespace.
+
+A User Scope represents the logical boundary containing the devices, applications, controllers, metadata, protocol state, and other participating entities belonging to a single user or deployment.
+
+All protocol operations are performed within a User Scope unless explicitly specified otherwise.
+
+This architecture provides several advantages:
+
+- Independent operation of multiple users.
+- Isolation of protocol state.
+- Simplified device coordination.
+- Improved privacy.
+- Reduced dependence on centralized cloud infrastructure.
+- Natural edge-native operation.
+
+Protocols within the AADAconnect Protocol Suite SHALL operate within a User Scope unless otherwise defined by their respective specifications.
+
+The AADAconnect Platform MAY contain multiple independent User Scopes, but protocol state SHALL NOT be shared between User Scopes unless explicitly defined by a future specification.
 
 ---
 
