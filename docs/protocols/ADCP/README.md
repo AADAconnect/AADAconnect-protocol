@@ -133,19 +133,17 @@ As the protocol evolves, the specification is updated to accurately reflect impl
 
 ## Architecture
 
-- ../../architecture/Overview.md
-- ../../architecture/ProtocolStack.md
-- ../../architecture/Versioning.md
-- ../../architecture/Compatibility.md
-- ../../architecture/SecurityModel.md
+- [Architecture Overview](../../architecture/Overview.md)
+- [Protocol Stack](../../architecture/ProtocolStack.md)
+- [Versioning](../../architecture/Versioning.md)
+- [Compatibility](../../architecture/Compatibility.md)
+- [Security Model](../../architecture/SecurityModel.md)
 
 ## Related Protocols
 
-- ../APOP/README.md
-- ../AOTA/README.md
-- ../AADAcom/README.md
-
----
+- [APOP](../APOP/README.md)
+- [AOTA](../AOTA/README.md)
+- [AADAcom](../AADAcom/README.md)
 
 # Conformance
 
@@ -157,4 +155,10 @@ This README is informative and does not define protocol requirements.
 
 # Document Navigation
 
-**Next:** [Overview.md](Overview.md)
+**Previous**
+
+- [AADAconnect Protocol Suite](../../../README.md)
+
+**Next**
+
+- [ADCP Overview](Overview.md)
